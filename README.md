@@ -2,6 +2,10 @@
 
 Simulation de gravitation newtonienne entre plusieurs corps, rendue en 3D dans le navigateur avec three.js.
 
+**▶ [Démo en ligne](https://rioquentin.github.io/simu-gravite/)**
+
+<p align="center"><img src="docs/orbit.gif" alt="Un petit corps bleu en orbite autour d'un corps massif orange, avec sa traînée" width="520"></p>
+
 La scène par défaut place un petit corps en orbite circulaire autour d'un corps massif. Le moteur physique est écrit à la main, sans bibliothèque de physique : vecteurs, loi de gravitation et intégration du mouvement.
 
 ## Lancer
@@ -70,10 +74,14 @@ src/
   main.ts           scène three.js, conditions initiales, boucle d'animation
 ```
 
+Côté rendu, le rayon de chaque sphère suit $\sqrt[3]{m}$ (à densité égale, le volume est proportionnel à la masse), avec un minimum pour que les corps légers restent visibles. Chaque corps laisse une traînée de ses 400 dernières positions.
+
+La démo est publiée sur GitHub Pages par un workflow GitHub Actions (`.github/workflows/deploy.yml`) à chaque push sur `main`.
+
 ## Pistes
 
 - **Autres intégrateurs** (`integrators.ts` est prévu pour ça) : Velocity Verlet / leapfrog (ordre 2, symplectique), RK4, pour comparer leur précision.
 - **Afficher l'énergie totale** (cinétique + potentielle) au fil du temps, pour mesurer la qualité de chaque intégrateur.
-- **Traînées d'orbite** et taille ou couleur des sphères en fonction de la masse.
+- **Pas de temps indépendant du framerate** : aujourd'hui la simulation avance d'un pas fixe par image, donc elle tourne plus vite sur un écran 144 Hz que sur un écran 60 Hz.
 - **Scénarios** : problème à trois corps, orbite en huit de Chenciner–Montgomery, système solaire simplifié.
 - Exploiter la 3ᵉ loi de Newton ($\vec F_{AB} = -\vec F_{BA}$) pour calculer chaque paire une seule fois, puis Barnes–Hut ($O(n \log n)$) pour beaucoup de corps.
